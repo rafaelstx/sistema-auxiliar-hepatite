@@ -1,0 +1,208 @@
+FUNCTION_BLOCK tipper
+VAR_INPUT
+    nausea: REAL;
+    vomito: REAL;
+    dorAbdominal: REAL;
+    febre: REAL;
+    amarelamento: REAL;
+    frequenciaSintoma: REAL;
+END_VAR
+
+VAR_OUTPUT
+    probabilidadeHepatite: REAL;
+END_VAR
+
+FUZZIFY nausea
+    TERM baixa := (0, 0) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+FUZZIFY vomito
+    TERM baixa := (0, 0) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+FUZZIFY dorAbdominal
+    TERM baixa := (0, 0) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+FUZZIFY febre
+    TERM baixa := (0, 0) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+FUZZIFY amarelamento
+    TERM baixa := (0, 1) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+
+FUZZIFY frequenciaSintoma
+    TERM baixa := (0, 1) (25,1) (50, 0) ;
+    TERM media := (0, 0) (50,1) (75, 1)(100,0);
+    TERM alta := (50, 0) (90,1)(100, 1);
+END_FUZZIFY
+
+DEFUZZIFY probabilidadeHepatite
+    TERM baixa := (0, 0) (20, 1) (30, 0);
+    TERM media := (20, 0) (30, 1) (40, 1) (50, 0);
+    TERM alta := (40, 0) (50, 1) (100, 1);
+    METHOD : COG;
+    DEFAULT := 0;
+END_DEFUZZIFY
+
+// Definir as regras fuzzy para o diagnóstico
+RULEBLOCK diagnosisRules
+    AND : MIN;
+    ACT : MIN;
+    ACCU : MAX;
+	
+	RULE 1 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+    RULE 2 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+    RULE 3 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+    RULE 4 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+    RULE 5 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+    RULE 6: IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+    RULE 7 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+    RULE 8 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+    RULE 9 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 10 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 11 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 12 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 13 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 14 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 15 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 16 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 17 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+	RULE 18 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 19 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 20 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 21 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 22 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 23 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 24 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 25 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 26 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+	RULE 27 : IF nausea IS baixa AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 28 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 29 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 30 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 31 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 32 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 33 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 34 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 35 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 36 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 37 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 38 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 39 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 40 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 41 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 42 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 43 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 44 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 45 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 46 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 47 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 48 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 49 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 50 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 51 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 52 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 53 : IF nausea IS baixa AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 54 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 55 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 56 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 57 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 58 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 59 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 60 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 61 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 62 : IF nausea IS baixa AND vomito IS alta AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 63 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 64 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;	
+	RULE 65 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 66 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 67 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 68 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 69 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 70 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 71 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 72 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 73 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 74 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 75 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 76 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+	RULE 77 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 78 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 79 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 80 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 81 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 82 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 83 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 84 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 85 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 86 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 87 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 88 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 89 : IF nausea IS media AND vomito IS baixa AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 90 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 91 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 92 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 93 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 94 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 95: IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 96 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 97 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 98 : IF nausea IS media AND vomito IS media AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 99 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 100 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 101 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 102 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 103 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 104 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 105 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS alta;
+	RULE 106 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 107 : IF nausea IS media AND vomito IS media AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 108 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 109 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 110 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 111 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS alta;
+	RULE 112 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 113 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 114 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS alta;
+	RULE 115 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS alta;
+	RULE 116 : IF nausea IS media AND vomito IS media AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 117 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 118 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 119 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+    RULE 120 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 121 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 122 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 123 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 124 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+	RULE 125 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS baixa AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 126 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 127 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 128 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 129 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 130 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 131 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS media AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 132 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS media;
+	RULE 133 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS media;
+	RULE 134 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS media AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	RULE 135 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS baixa THEN probabilidadeHepatite IS baixa;
+	RULE 136 : IF nausea IS alta AND vomito IS baixa AND dorAbdominal IS alta AND febre IS baixa AND amarelamento IS baixa AND frequenciaSintoma IS media THEN probabilidadeHepatite IS baixa;
+	RULE 137 : IF amarelamento IS media THEN probabilidadeHepatite IS alta;
+	RULE 138 : IF amarelamento IS alta THEN probabilidadeHepatite IS alta;
+	RULE 139 : IF nausea IS alta AND vomito IS alta AND dorAbdominal IS alta AND febre IS alta AND amarelamento IS baixa AND frequenciaSintoma IS alta THEN probabilidadeHepatite IS alta;
+	
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
